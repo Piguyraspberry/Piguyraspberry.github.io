@@ -8,20 +8,69 @@
 			overflow: hidden;
 		}
 		
-		#box {
+		#wbox {
 			position: absolute;
-			left: 50%; top: 50%;
-			transform: translate(-50%, -50%);
-			border: 3px solid white;
+			left: 50%; top: 15%;
+			transform: translate(-50%, -15%);
 			width: 60%;
-			height: 70%;
+			height: 35%;
 			border-radius: 25px;
 			background-color: white;
+			font-size: 16px;
+			border: 1px solid gray;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			
+		}
+
+		#rbox {
+			position: absolute;
+			left: 50%; top: 85%;
+			transform: translate(-50%, -85%);
+			width: 60%;
+			height: 35%;
+			border-radius: 25px;
+			background-color:white;
+			font-size: 16px;
+			border: 1px solid gray;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 		}
 		
 		h1{
 			font-weight: bold;
 			text-align: center;
+		}
+		input[type="text"] {
+			background-color: lightgray;
+			font-size: 16px;
+			border: 1px solid gray;
+			width: 100%;
+			border-radius: 5px;
+			padding: 10px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			/* Add more CSS properties as needed */
+		}
+		input[type="text"]:focus {
+			outline: none;
+			border-color: blue;
+			box-shadow: 0 0 4px blue;
+			/* Add more CSS properties as needed */
+		}
+		button {
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%, 0);
+			width: 50%;
+			border-radius: 5px;
+			padding: 10px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			background-color: lightgray;
+			font-size: 16px;
+			border: 1px solid gray;
+		}
+		button:focus {
+			outline: none;
+			border-color: blue;
+			box-shadow: 0 0 4px blue;
 		}
 	</style>
 	<body>
@@ -33,7 +82,7 @@
 			// Import the functions you need from the SDKs you need
 			import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
 			import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-analytics.js";
-			import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+			import { getDatabase, onValue, ref, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 			// TODO: Add SDKs for Firebase products that you want to use
 			// https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -65,10 +114,19 @@
 					money: money
 				})
 			}
+
+			document.getElementById('download').onclick = function() {
+				const distanceRef = ref(getDatabase(), "users/" + document.getElementById('userIDout').value);
+				onValue(distanceRef, (snapshot) => {
+					var data = snapshot.val();
+					document.getElementById('moneyout').value = data.money;
+					document.getElementById('nameout').value = data.name;
+				})
+			}
 			
 		</script>
-		<section id="box">
-			<h1>Firebase Data Client</h1>
+		<section id="wbox">
+			<h1>Firebase Data Client - Upload</h1>
 			<input type="text" id="userID" value="userID"></input>
 			<div></div>
 			<input type="text" id="name" value="name"></input>
@@ -76,6 +134,16 @@
 			<input type="text" id="money" value="money"></input>
 			<div></div>
 			<button id="upload">Upload Data</button>
+		</section>
+		<section id="rbox">
+			<h1>Firebase Data Client - Download</h1>
+			<input type="text" id="userIDout" value="userID"></input>
+			<div></div>
+			<input type="text" id="nameout" value="name" readonly></input>
+			<div></div>
+			<input type="text" id="moneyout" value="money" readonly></input>
+			<div></div>
+			<button id="download">Download Data</button>
 		</section>
 	</body>
 </html>
