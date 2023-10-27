@@ -138,17 +138,17 @@
 		<section id="wbox">
 			<h1>Firebase Data Client - Upload</h1>
 			<div class="g-signin2" data-onsuccess="onSignIn"></div>
-			<input type="text" id="userID" value="userID"></input>
+			<input type="text" id="userID" value="userID" onfocus="if (this.value == 'userID') {this.value = '';}" onblur="if (this.value == '') {this.value = 'userID';}"></input>
 			<div></div>
-			<input type="text" id="name" value="name"></input>
+			<input type="text" id="name" value="name" onfocus="if (this.value == 'name') {this.value = '';}" onblur="if (this.value == '') {this.value = 'name';}"></input>
 			<div></div>
-			<input type="text" id="money" value="money"></input>
+			<input type="text" id="money" value="money" onfocus="if (this.value == 'money') {this.value = '';}" onblur="if (this.value == '') {this.value = 'money';}"></input>
 			<div></div>
 			<button id="upload">Upload Data</button>
 		</section>
 		<section id="rbox">
 			<h1>Firebase Data Client - Download</h1>
-			<input type="text" id="userIDout" value="userID"></input>
+			<input type="text" id="userIDout" value="userID" onfocus="if (this.value == 'userID') {this.value = '';}" onblur="if (this.value == '') {this.value = 'userID';}"></input>
 			<div></div>
 			<input type="text" id="nameout" value="name" readonly></input>
 			<div></div>
