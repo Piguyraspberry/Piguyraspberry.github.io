@@ -162,6 +162,7 @@
 			  decode = decodeJwt(response.credential);
 			  console.log("Name: " + decode.name);
 			  console.log("Email: " + decode.email);
+			  document.getElementById("img").src = decode.picture;
 			}
 			window.onload = function () {
 			  google.accounts.id.initialize({
@@ -183,5 +184,6 @@
 			}
 		</script>
 		<div id="buttonDiv"></div>
+		<img src="/" id="img"/>
 	</body>
 </html>

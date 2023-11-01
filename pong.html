@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Find Dog on Bing Map</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <input type="range" id="zoomLevel" value="15" min="1" max="25" step="2"/>
+    <script>
+        function initMap() {
+            console.log('initMap');
+            var latitude = 37.7749; // Replace with your desired latitude
+            var longitude = -122.4194; // Replace with your desired longitude
+            var zoomLevel = document.getElementById('zoomLevel').value; // Replace with your desired zoom level
+
+            var mapUrl = 'https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/' + latitude + ',' + longitude + '?mapSize=650,650&key=AkTAC4J9uKx3-bTrp9kXStHLgdX2vc7SZIneTLOL-AC7xjlWB5K4bOqZ-g1AHYzf&dpi=96&scale=1&format=png&zoomLevel=' + zoomLevel + '&pp=' + latitude + ',' + longitude;
+
+            var mapImage = new Image();
+            mapImage.src = mapUrl;
+
+            mapImage.onload = function() {
+                var mapElement = document.getElementById('map');
+                mapElement.innerHTML = '';
+                mapElement.appendChild(mapImage);
+            };
+        }
+        initMap();
+
+        document.getElementById('zoomLevel').addEventListener('input', function() {
+            initMap();
+        });
+    </script>
+    <script async defer src="https://www.bing.com/api/maps/mapcontrol?callback=initMap"></script>
+</body>
+</html>
