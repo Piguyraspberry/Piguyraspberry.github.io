@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Displaying mbtiles with Leaflet.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/sql.js@0.3.2/js/sql.js"></script>
+    <script src="https://unpkg.com/Leaflet.TileLayer.MBTiles@1.0.0/Leaflet.TileLayer.MBTiles.js"></script>
+
+  </head>
+  <body>
+    <div id="map" style="height: 500px;"></div>
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer.mbtiles('https://ivansanchez.gitlab.io/Leaflet.TileLayer.MBTiles/demo/countries-raster.mbtiles', {
+        maxZoom: 18
+        }).addTo(map);
+    </script>
+  </body>
+</html>

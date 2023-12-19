@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-    <canvas id="drawingCanvas" width="680" height="680"></canvas>
+    <canvas id="drawingCanvas"></canvas>
 
     <button id="blackMarker">Black Marker</button>
     <button id="redMarker">Red Marker</button>
@@ -18,13 +18,18 @@
     <button id="clear">Clear</button>
 
     <label for="sizeSlider">Size:</label>
-    <input type="range" id="sizeSlider" min="1" max="10" value="2" />
+    <input type="range" id="sizeSlider" min="1" max="10" value="2"/>
+    <input type="range" id="qualitySlider" min="1" max="20" value="1"/>
+
+    <input type="file" id="uploadImage" accept="image/*" onchange="processImage(event)">
 
     <button id="downloadImage">Download Image</button>
 
     <script>
         var canvas = document.getElementById('drawingCanvas');
         var ctx = canvas.getContext('2d');
+        var sizeSlider = document.getElementById('sizeSlider');
+        var qualitySlider = document.getElementById('qualitySlider');
 
         var isDrawing = false;
         var lastX = 0;
@@ -32,28 +37,58 @@
         var currentColor = 'black';
         var currentTool = 'marker';
         var currentSize = 2;
+        var width = 640;
+        var height = 640;
+        var multiplier = 10;
+
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+
+        sizeSlider.min = 1 * multiplier;
+        sizeSlider.max = 10 * multiplier;
+
+        canvas.width = width * multiplier;
+        canvas.height = height * multiplier;
+        
         
         ctx.lineJoining = "round";
         ctx.lineCap = "round";
 
-        ctx.crossOrigin = '*'; 
-
         // Create a new image element
         const backgroundImage = new Image();
 
+        //var imgSrc = "images/SIPI_Jelly_Beans_4.1.07.tiff.jpg";  
+
         // Set the source of the image
-        backgroundImage.src = 'https://www.w3schools.com/w3css/img_lights.jpg';
+        //backgroundImage.src = 'http://corsproxy.io/?'+ imgSrc;
+        //backgroundImage.src = imgSrc;
 
         // Wait for the image to load
-        backgroundImage.onload = function() {
+        //backgroundImage.onload = function() {
             // Draw the image as the background
-            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-        };
+            //ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        //};
+
+        function processImage(event) {
+            console.log('Processing image');
+            var input = event.target;
+            var file = input.files[0];
+
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            console.log('Processing image');
+            reader.onloadend = function() {
+                console.log('Processing image');
+                backgroundImage.src = reader.result;
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            };
+            
+        }
 
         function startDrawing(e) {
             isDrawing = true;
-            lastX = e.offsetX;
-            lastY = e.offsetY;
+            lastX = e.offsetX * multiplier;
+            lastY = e.offsetY * multiplier;
         }
 
         function draw(e) {
@@ -61,14 +96,14 @@
 
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
-            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.lineTo(e.offsetX * multiplier, e.offsetY * multiplier);
             ctx.strokeStyle = currentColor;
             ctx.lineWidth = currentSize;
             ctx.stroke();
             ctx.closePath();
 
-            lastX = e.offsetX;
-            lastY = e.offsetY;
+            lastX = e.offsetX * multiplier;
+            lastY = e.offsetY * multiplier;
         }
 
         function stopDrawing() {
@@ -133,9 +168,28 @@
 
         document.getElementById('clear').addEventListener('click', clearCanvas);
 
-        var sizeSlider = document.getElementById('sizeSlider');
+        
         sizeSlider.addEventListener('input', function() {
             setSize(this.value);
+        });
+
+        qualitySlider.addEventListener('input', function() {
+            
+            sizeSlider.min = sizeSlider.min / multiplier;
+            sizeSlider.max = sizeSlider.max / multiplier;
+            sizeSlider.value = sizeSlider.value / multiplier;
+
+            canvas.width = width / multiplier;
+            canvas.height = height / multiplier;
+
+            multiplier = this.value;
+
+            sizeSlider.min = sizeSlider.min * multiplier;
+            sizeSlider.max = sizeSlider.max * multiplier;
+            sizeSlider.value = sizeSlider.value * multiplier;
+
+            canvas.width = width * multiplier;
+            canvas.height = height * multiplier;
         });
 
         document.getElementById('downloadImage').addEventListener('click', function() {
